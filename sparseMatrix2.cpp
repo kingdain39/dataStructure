@@ -77,13 +77,22 @@ SparseMatrix sparse_Matrix_add(SparseMatrix a, SparseMatrix b){
 
 }
 
-
+int compare(const void *p1, const void *p2){
+    const element *a = (const element *)p1;
+    const element *b = (const element *)p2;
+    if(a->row==b->row){
+        return a->col-b->col;
+    }
+    return a->row - b->row; 
+}
 
 SparseMatrix sparse_matrix_transpose(SparseMatrix a){
     SparseMatrix Ta;
     Ta.rows = a.cols;
     Ta.cols = a.rows;
     Ta.terms = a.terms;
+
+
     int ca=0;
     while(ca<a.terms){
         Ta.data[ca].row = a.data[ca].col;
@@ -92,25 +101,21 @@ SparseMatrix sparse_matrix_transpose(SparseMatrix a){
 
         ca++;
     }
-
+    qsort(Ta.data, Ta.terms, 3*sizeof(int), compare); 
     return Ta;
 }
 
 void print_sparseMatrix(SparseMatrix a){
-
+    int cursor=0;
     for(int i=0; i<a.rows; i++){
         for(int j=0; j<a.cols; j++){
-            int found =0;
-            for(int k=0; k<a.terms; k++){
-                if(a.data[k].row==i && a.data[k].col==j){
-                    printf("%d ", a.data[k].value);
-                    found =1;
-                    break;
-                }
+            if(a.data[cursor].row == i && a.data[cursor].col == j){
+                printf("%d ", a.data[cursor].value);
+                cursor++;
             }
-            if(found==0) printf("0 ");
-            
-            
+            else{
+                printf("0 ");
+            }
         }
         printf("\n");
     }
