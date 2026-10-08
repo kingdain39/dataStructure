@@ -45,7 +45,7 @@ SparseMatrix sparse_matrix_transpose(SparseMatrix a){
 
         ca++;
     }
-    qsort(Ta.data, Ta.terms, 3*sizeof(int), compare); 
+    qsort(Ta.data, Ta.terms, sizeof(element), compare); 
     return Ta;
 }
 
@@ -53,9 +53,10 @@ void print_sparseMatrix(SparseMatrix a){
     int cursor=0;
     for(int i=0; i<a.rows; i++){
         for(int j=0; j<a.cols; j++){
-            if(a.data[cursor].row == i && a.data[cursor].col == j){
+            if(cursor<=a.terms && a.data[cursor].row == i && a.data[cursor].col == j){
                 printf("%d ", a.data[cursor].value);
                 cursor++;
+                
             }
             else{
                 printf("0 ");
@@ -69,14 +70,21 @@ void print_sparseMatrix(SparseMatrix a){
 
 int main(void){
 
-    SparseMatrix m4 = {{{0,0,1},{0,1,2},{1,0,3},{2,0,1},{2,2,7}},3,3,5};
-    printf("m4: \n");
-    print_sparseMatrix(m4);
+    SparseMatrix m1 = {{{0,0,1},{0,1,2},{1,0,3},{2,0,1},{2,2,7}},3,3,5};
+    printf("m1: \n");
+    print_sparseMatrix(m1);
 
 
     
    
-    printf("m4(T): \n");
-     print_sparseMatrix(sparse_matrix_transpose(m4));
+    printf("m1(T): \n");
+    print_sparseMatrix(sparse_matrix_transpose(m1));
+
+    SparseMatrix m2 = {{{0,3,7}, {1,0,9}, {1,5,8}, {3,0,6}, {3,1,5}, {4,5,1}, {5,2,2}},6, 6, 7};
+    printf("m2: \n");
+    print_sparseMatrix(m2);
+
+    printf("m2(T): \n");
+    print_sparseMatrix(sparse_matrix_transpose(m2));
 
 }
