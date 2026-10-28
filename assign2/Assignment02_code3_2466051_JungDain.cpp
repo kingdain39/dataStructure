@@ -1,7 +1,7 @@
 // bst_insertion_deletion.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
+
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
@@ -64,8 +64,8 @@ void insert_node(TreeNode **root, int key)
 // Deletion in binary search tree
 void delete_node(TreeNode **root, int key)
 {
-	TreeNode *p, *child, *succ, *succ_p, *t;
-	// search node t with key, p: t¡¯s parent
+	TreeNode *p, *child, *pred, *pred_p, *t;
+	// search node t with key, p: tï¿½ï¿½s parent
 	p = NULL;
 	t = *root;
 	while (t != NULL && t->key != key) {
@@ -105,20 +105,20 @@ void delete_node(TreeNode **root, int key)
 	// Case 3
 	else {
 		// Find the successor at right subtree
-		succ_p = t;
-		succ = t->right;
+		pred_p = t;
+		pred = t->left;
 		// Keep moving to the left and find the successor
-		while (succ->left != NULL) {
-			succ_p = succ;
-			succ = succ->left;
+		while (pred->right != NULL) {
+			pred_p = pred;
+			pred = pred->right;
 		}
 		//succ_p->left = succ->right;		
-		if (succ_p->left == succ)
-			succ_p->left = succ->right;
+		if (pred_p->right == pred) 
+			pred_p ->right = pred -> left;
 		else
-			succ_p->right = succ->right;
-		t->key = succ->key;
-		t = succ;
+			pred_p->left = pred->left;
+		t->key = pred->key;
+		t = pred;
 	}
 //	free(t);
 }
@@ -133,7 +133,7 @@ void inorder(TreeNode *root) {
 	}
 }
 
-void main()
+int main()
 {
 	TreeNode *root = &n1;
 
